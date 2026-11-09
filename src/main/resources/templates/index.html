@@ -1,0 +1,209 @@
+```html
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendWise - My Budget</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 25px 8%;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        header p {
+            color: #cbd5e1;
+            margin-bottom: 0;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px #0000000a;
+            min-width: 0;
+        }
+
+        .card p {
+            color: #64748b;
+        }
+
+        .amount {
+            font-size: 28px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+        }
+
+        .green {
+            color: #15803d;
+        }
+
+        .red {
+            color: #b91c1c;
+        }
+
+        .progress {
+            height: 14px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #22c55e;
+            transition: width 0.3s ease;
+        }
+
+        .button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            margin: 10px 8px 0 0;
+        }
+
+        .button:hover {
+            background: #1d4ed8;
+        }
+
+        .section {
+            margin-top: 24px;
+        }
+
+        .warning {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 22px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>SpendWise 💰</h1>
+    <p>Your money. Your plan. Your month.</p>
+</header>
+
+<main>
+    <h2>Monthly Overview</h2>
+    <p>Welcome! Here is your financial summary for this month.</p>
+
+    <!-- Dashboard summary cards -->
+    <section class="cards">
+
+        <div class="card">
+            <p>Monthly Budget</p>
+            <div class="amount">
+                ₹<span th:text="${#numbers.formatDecimal(monthlyBudget, 1, 2)}">6000.00</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <p>Total Spent This Month</p>
+            <div class="amount">
+                ₹<span th:text="${#numbers.formatDecimal(totalSpent, 1, 2)}">0.00</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <p>Money Remaining</p>
+            <div class="amount"
+                 th:classappend="${remaining < 0} ? ' red' : ' green'">
+                ₹<span th:text="${#numbers.formatDecimal(remaining, 1, 2)}">6000.00</span>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Budget progress -->
+    <section class="card section">
+        <h2>Monthly Budget Progress</h2>
+
+        <p>
+            <strong th:text="${progress}">0</strong>% of your budget has been spent.
+        </p>
+
+        <div class="progress">
+            <div class="progress-fill"
+                 th:style="'width: ' + ${progress} + '%'">
+            </div>
+        </div>
+
+        <p class="warning" th:if="${overBudget}">
+            Warning! You have exceeded your monthly budget.
+        </p>
+
+        <p th:unless="${overBudget}">
+            Keep tracking your spending to stay within your budget!
+        </p>
+    </section>
+
+    <!-- Navigation -->
+    <section class="card section">
+        <h2>Manage Your Money</h2>
+        <p>Add expenses, change your monthly budget, and review your transactions.</p>
+
+        <a class="button" href="/expenses/new">
+            + Add Expense
+        </a>
+
+        <a class="button" href="/expenses">
+            View Transaction History
+        </a>
+
+        <!-- New budget button -->
+        <a class="button" href="/budget">
+            Set Monthly Budget
+        </a>
+    </section>
+
+</main>
+
+</body>
+</html>
+```

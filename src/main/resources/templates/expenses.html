@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History | SpendWise</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #172554;
+            color: white;
+            padding: 22px 7%;
+        }
+
+        header h1 { margin: 0; }
+
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .panel {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th, td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+        }
+
+        .amount {
+            color: #b91c1c;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 10px 8px 10px 0;
+            padding: 11px 16px;
+            background: #2563eb;
+            color: white;
+            border-radius: 7px;
+            text-decoration: none;
+        }
+
+        .empty {
+            padding: 20px 0;
+            color: #64748b;
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>SpendWise 💰</h1>
+    <p>Your transaction history</p>
+</header>
+
+<main>
+    <h2>My Expenses</h2>
+    <p>Here are the expenses saved in your database.</p>
+
+    <a class="button" href="/expenses/new">+ Add Expense</a>
+    <a class="button" href="/">Back to Dashboard</a>
+
+    <section class="panel">
+        <p th:if="${#lists.isEmpty(expenses)}" class="empty">
+            No expenses yet. Add your first expense to get started!
+        </p>
+
+        <table th:unless="${#lists.isEmpty(expenses)}">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Payment Method</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="expense : ${expenses}">
+                    <td class="amount">
+                        ₹<span th:text="${expense.amount}">150</span>
+                    </td>
+                    <td th:text="${expense.category}">Food</td>
+                    <td th:text="${expense.description}">Lunch</td>
+                    <td th:text="${expense.date}">2026-10-29</td>
+                    <td th:text="${expense.paymentMethod}">UPI</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
